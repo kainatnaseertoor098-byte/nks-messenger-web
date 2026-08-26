@@ -7,53 +7,183 @@
   <style>
     :root{
       --bg-primary:#0f172a; --bg-secondary:#1e293b; --accent:#10b981;
-      --muted:#94a3b8; --card:#334155; --text:#f8fafc;
+      --muted:#94a3b8; --card:#334155; --text:#f8fafc; --danger:#ef4444;
+      --online:#22c55e; --away:#eab308; --offline:#64748b;
     }
     *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
     body{background:var(--bg-primary);color:var(--text);display:flex;justify-content:center;min-height:100vh;padding:20px;}
     .app{width:100%;max-width:920px;height:80vh;background:var(--bg-secondary);display:flex;border-radius:8px;overflow:hidden;border:1px solid #0b1220}
     /* Sidebar / Contacts */
     .sidebar{width:320px;background:linear-gradient(180deg,#0f172a, #111827);border-right:1px solid #0b1220;display:flex;flex-direction:column}
-    .sidebar header{padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #0b1220}
-    .sidebar h2{color:var(--accent);font-size:1rem}
+    .sidebar header{padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #0b1220;cursor:pointer}
+    .sidebar header:hover{background:rgba(255,255,255,0.05)}
+    .sidebar h2{color:var(--accent);font-size:1rem;flex:1}
+    .header-icons{display:flex;gap:8px}
+    .icon-btn{padding:6px;border:none;background:none;color:var(--text);cursor:pointer;font-size:1.1rem;border-radius:6px}
+    .icon-btn:hover{background:rgba(255,255,255,0.1)}
     .search{padding:12px;border-bottom:1px solid #0b1220}
     .search input{width:100%;padding:10px;border-radius:6px;border:1px solid #475569;background:#0b1220;color:var(--text)}
     .contacts{flex:1;overflow:auto;padding:10px}
-    .contact{display:flex;gap:12px;padding:10px;background:var(--card);margin-bottom:8px;border-radius:8px;align-items:center;cursor:pointer}
+    .contact{display:flex;gap:12px;padding:10px;background:var(--card);margin-bottom:8px;border-radius:8px;align-items:center;cursor:pointer;position:relative}
     .contact.active{outline:2px solid rgba(16,185,129,0.12)}
-    .avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1220;background:var(--accent)}
+    .avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1220;background:var(--accent);flex-shrink:0;position:relative;overflow:hidden;font-size:1.2rem}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .status-indicator{position:absolute;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg-secondary);bottom:0;right:0}
+    .status-indicator.online{background:var(--online)}
+    .status-indicator.away{background:var(--away)}
+    .status-indicator.offline{background:var(--offline)}
+    .c-info{flex:1;min-width:0}
     .c-info h4{font-size:0.95rem}
     .c-info p{color:var(--muted);font-size:0.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:180px}
+    .contact-menu{display:flex;gap:4px;opacity:0;transition:opacity 0.2s}
+    .contact:hover .contact-menu{opacity:1}
+    .contact-btn{padding:4px 6px;border-radius:4px;border:none;background:rgba(255,255,255,0.1);color:var(--text);cursor:pointer;font-size:0.75rem;transition:background 0.2s}
+    .contact-btn:hover{background:rgba(255,255,255,0.2)}
+    .contact-btn.danger:hover{background:var(--danger)}
     .add-contact{padding:12px;border-top:1px solid #0b1220;display:flex;gap:8px}
     .add-contact input{flex:1;padding:8px;border-radius:6px;border:1px solid #475569;background:#0b1220;color:var(--text)}
-    .btn{padding:8px 12px;border-radius:6px;border:none;background:var(--accent);color:#04281b;font-weight:700;cursor:pointer}
+    .btn{padding:8px 12px;border-radius:6px;border:none;background:var(--accent);color:#04281b;font-weight:700;cursor:pointer;transition:opacity 0.2s}
+    .btn:hover{opacity:0.9}
+    .btn.danger{background:var(--danger);color:white}
+    .btn.secondary{background:rgba(255,255,255,0.1);color:var(--text)}
     /* Chat area */
     .chat-area{flex:1;display:flex;flex-direction:column}
     .chat-header{padding:14px 16px;background:#071026;border-bottom:1px solid #0b1220;display:flex;align-items:center;gap:12px}
-    .chat-header .title{font-weight:700}
+    .chat-header .title{font-weight:700;flex:1}
+    .chat-header .header-actions{display:flex;gap:6px}
+    .chat-header .profile-btn{padding:6px 10px;background:rgba(255,255,255,0.1);border:none;color:var(--text);border-radius:6px;cursor:pointer;font-size:0.85rem}
+    .chat-header .profile-btn:hover{background:rgba(255,255,255,0.2)}
     .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
     .message{max-width:70%;padding:10px;border-radius:10px;background:#0b314a;color:var(--text);word-break:break-word}
     .message.you{align-self:flex-end;background:#0b3a1b}
     .meta{font-size:0.75rem;color:var(--muted);margin-top:6px}
     .composer{padding:12px;border-top:1px solid #0b1220;background:#071026;display:flex;gap:8px}
     .composer input{flex:1;padding:10px;border-radius:8px;border:1px solid #475569;background:#0b1220;color:var(--text)}
-    /* Mobile responsiveness: hide sidebar when chat open on small screens */
+    /* Modal styles */
+    .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;display:none}
+    .modal-overlay.active{display:flex}
+    .modal{background:var(--bg-secondary);border:1px solid #0b1220;border-radius:8px;padding:24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
+    .modal h3{margin-bottom:12px;color:var(--text)}
+    .modal h4{margin-top:16px;margin-bottom:8px;color:var(--text);font-size:0.95rem}
+    .modal p{color:var(--muted);margin-bottom:20px}
+    .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+    .modal-actions button{padding:8px 16px;border-radius:6px;border:none;cursor:pointer}
+    .modal-actions .cancel{background:rgba(255,255,255,0.1);color:var(--text)}
+    .modal-actions .confirm{background:var(--danger);color:white}
+    .modal-actions .save{background:var(--accent);color:#04281b;font-weight:700}
+    .form-group{margin-bottom:16px}
+    .form-group label{display:block;margin-bottom:6px;font-size:0.9rem;color:var(--text)}
+    .form-group input,.form-group textarea,.form-group select{width:100%;padding:8px;border-radius:6px;border:1px solid #475569;background:#0b1220;color:var(--text)}
+    .form-group textarea{resize:vertical;min-height:80px}
+    .checkbox-group{display:flex;flex-direction:column;gap:8px}
+    .checkbox-item{display:flex;align-items:center;gap:8px}
+    .checkbox-item input{width:auto}
+    .profile-card{background:var(--card);border-radius:8px;padding:20px;text-align:center}
+    .profile-avatar-large{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1220;background:var(--accent);margin:0 auto 16px;font-size:2rem;overflow:hidden}
+    .profile-avatar-large img{width:100%;height:100%;object-fit:cover}
+    .profile-info{margin:16px 0;text-align:left}
+    .profile-info p{margin-bottom:8px;font-size:0.9rem}
+    .profile-info .label{color:var(--muted);font-size:0.85rem}
+    /* Mobile responsiveness */
     @media(max-width:720px){
       .app{height:100vh;padding:0;border-radius:0}
       .sidebar{position:absolute;z-index:3;left:0;top:0;bottom:0;transform:translateX(0);width:100%;max-width:none}
       .chat-area{position:relative;z-index:2}
       .sidebar.hidden{display:none}
       .chat-header .back{display:inline-block;padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.02);cursor:pointer;margin-right:8px}
+      .contact-menu{opacity:1}
+      .modal{max-width:95%}
     }
   </style>
 </head>
 <body>
 
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <h3 id="modalTitle">Confirm Action</h3>
+    <p id="modalMessage">Are you sure?</p>
+    <div class="modal-actions">
+      <button class="cancel" id="cancelBtn">Cancel</button>
+      <button class="confirm" id="confirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <h3>Profile</h3>
+    <div class="profile-card" id="profileContent"></div>
+    <div class="modal-actions">
+      <button class="secondary" id="editProfileBtn" style="background:rgba(255,255,255,0.1);color:var(--text)">Edit Profile</button>
+      <button class="cancel" id="closeProfileBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="editProfileModal">
+  <div class="modal">
+    <h3>Edit Profile</h3>
+    <div class="form-group">
+      <label>Profile Picture URL</label>
+      <input type="text" id="profilePicInput" placeholder="https://example.com/image.jpg" />
+    </div>
+    <div class="form-group">
+      <label>Bio</label>
+      <textarea id="bioInput" placeholder="Tell us about yourself..."></textarea>
+    </div>
+    <h4>Status</h4>
+    <div class="form-group">
+      <select id="statusSelect">
+        <option value="online">🟢 Online</option>
+        <option value="away">🟡 Away</option>
+        <option value="offline">⚫ Offline</option>
+      </select>
+    </div>
+    <h4>Privacy Settings</h4>
+    <div class="checkbox-group">
+      <div class="checkbox-item">
+        <input type="checkbox" id="allowMessages" checked />
+        <label style="margin:0">Allow anyone to message me</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="showOnline" checked />
+        <label style="margin:0">Show my online status</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="showProfile" checked />
+        <label style="margin:0">Allow others to view my profile</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="showBio" checked />
+        <label style="margin:0">Show my bio to others</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="readReceipts" checked />
+        <label style="margin:0">Enable read receipts</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="lastSeen" checked />
+        <label style="margin:0">Show last seen time</label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="cancel" id="cancelEditBtn">Cancel</button>
+      <button class="save" id="saveProfileBtn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <div class="app" role="application" aria-label="NKS Messenger">
   <aside class="sidebar" id="sidebar">
-    <header>
+    <header id="headerClick">
       <h2>NKS Messenger</h2>
-      <div class="status">🔒</div>
+      <div class="header-icons">
+        <button class="icon-btn" id="profileHeaderBtn" title="Profile">👤</button>
+        <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+      </div>
     </header>
 
     <div class="search">
@@ -73,6 +203,8 @@
       <button class="back" id="backBtn" style="display:none">←</button>
       <div class="title" id="chatTitle">Select a chat</div>
       <div style="flex:1"></div>
+      <button class="profile-btn" id="contactProfileBtn" style="display:none">👤 Profile</button>
+      <div class="header-actions" id="headerActions"></div>
       <div class="status-badge" style="background:#064e3b;color:#34d399;padding:4px 8px;border-radius:12px;font-size:0.75rem">E2E</div>
     </div>
 
@@ -88,18 +220,38 @@
 <script>
   // Simple chat app state persisted to localStorage
   const STORAGE_KEY = 'nks_chats_v1';
+  const USER_PROFILE_KEY = 'nks_user_profile_v1';
+
+  // Default user profile
+  const DEFAULT_USER_PROFILE = {
+    bio: 'Welcome to NKS Messenger!',
+    profilePic: null,
+    status: 'online',
+    privacy: {
+      allowMessages: true,
+      showOnline: true,
+      showProfile: true,
+      showBio: true,
+      readReceipts: true,
+      lastSeen: true
+    }
+  };
 
   // Default chats
   const DEFAULT = {
     chats: [
-      { id: 'group', name: 'General Group', avatar: 'NKS', messages: [{id:1,from:'NKS',text:'Welcome to NKS App!',ts:Date.now()}] },
-      { id: 'alice', name: 'Alice', avatar: 'A', messages: [{id:1,from:'Alice',text:'Hi! I am Alice.',ts:Date.now()-60000}] },
-      { id: 'bob', name: 'Bob', avatar: 'B', messages: [{id:1,from:'Bob',text:'Hello there!',ts:Date.now()-120000}] }
+      { id: 'group', name: 'General Group', avatar: 'NKS', bio: 'Group chat', status: 'online', messages: [{id:1,from:'NKS',text:'Welcome to NKS App!',ts:Date.now()}] },
+      { id: 'alice', name: 'Alice', avatar: 'A', bio: 'Love coding!', status: 'away', messages: [{id:1,from:'Alice',text:'Hi! I am Alice.',ts:Date.now()-60000}] },
+      { id: 'bob', name: 'Bob', avatar: 'B', bio: 'Designer & Developer', status: 'online', messages: [{id:1,from:'Bob',text:'Hello there!',ts:Date.now()-120000}] }
     ],
     selected: 'group'
   };
 
   let state = loadState();
+  let userProfile = loadUserProfile();
+  let pendingAction = null;
+  let selectedContactForProfile = null;
+  
   const contactsList = document.getElementById('contactsList');
   const messagesEl = document.getElementById('messages');
   const chatTitle = document.getElementById('chatTitle');
@@ -110,6 +262,22 @@
   const sidebar = document.getElementById('sidebar');
   const backBtn = document.getElementById('backBtn');
   const searchInput = document.getElementById('searchInput');
+  const confirmModal = document.getElementById('confirmModal');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const confirmBtn = document.getElementById('confirmBtn');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalMessage = document.getElementById('modalMessage');
+  const headerActions = document.getElementById('headerActions');
+  const profileModal = document.getElementById('profileModal');
+  const editProfileModal = document.getElementById('editProfileModal');
+  const profileHeaderBtn = document.getElementById('profileHeaderBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const editProfileBtn = document.getElementById('editProfileBtn');
+  const closeProfileBtn = document.getElementById('closeProfileBtn');
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
+  const contactProfileBtn = document.getElementById('contactProfileBtn');
+  const profileContent = document.getElementById('profileContent');
 
   function loadState(){
     try{
@@ -118,7 +286,130 @@
       return JSON.parse(raw);
     }catch(e){ console.error(e); localStorage.removeItem(STORAGE_KEY); return JSON.parse(JSON.stringify(DEFAULT)); }
   }
+
+  function loadUserProfile(){
+    try{
+      const raw = localStorage.getItem(USER_PROFILE_KEY);
+      if(!raw) { localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(DEFAULT_USER_PROFILE)); return JSON.parse(JSON.stringify(DEFAULT_USER_PROFILE)); }
+      return JSON.parse(raw);
+    }catch(e){ console.error(e); localStorage.removeItem(USER_PROFILE_KEY); return JSON.parse(JSON.stringify(DEFAULT_USER_PROFILE)); }
+  }
+
   function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function saveUserProfile(){ localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(userProfile)); }
+
+  function showConfirmModal(title, message, onConfirm) {
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    pendingAction = onConfirm;
+    confirmModal.classList.add('active');
+  }
+
+  function hideConfirmModal() {
+    confirmModal.classList.remove('active');
+    pendingAction = null;
+  }
+
+  function showProfileModal(contactId = null) {
+    if (contactId) {
+      selectedContactForProfile = contactId;
+      const contact = state.chats.find(c => c.id === contactId);
+      if (!contact) return;
+      renderContactProfile(contact);
+      editProfileBtn.textContent = 'View More';
+    } else {
+      selectedContactForProfile = null;
+      renderUserProfile();
+      editProfileBtn.textContent = 'Edit Profile';
+    }
+    profileModal.classList.add('active');
+  }
+
+  function hideProfileModal() {
+    profileModal.classList.remove('active');
+    selectedContactForProfile = null;
+  }
+
+  function showEditProfileModal() {
+    document.getElementById('profilePicInput').value = userProfile.profilePic || '';
+    document.getElementById('bioInput').value = userProfile.bio || '';
+    document.getElementById('statusSelect').value = userProfile.status || 'online';
+    document.getElementById('allowMessages').checked = userProfile.privacy.allowMessages;
+    document.getElementById('showOnline').checked = userProfile.privacy.showOnline;
+    document.getElementById('showProfile').checked = userProfile.privacy.showProfile;
+    document.getElementById('showBio').checked = userProfile.privacy.showBio;
+    document.getElementById('readReceipts').checked = userProfile.privacy.readReceipts;
+    document.getElementById('lastSeen').checked = userProfile.privacy.lastSeen;
+    hideProfileModal();
+    editProfileModal.classList.add('active');
+  }
+
+  function hideEditProfileModal() {
+    editProfileModal.classList.remove('active');
+  }
+
+  function renderUserProfile() {
+    profileContent.innerHTML = `
+      <div class="profile-avatar-large" style="background:var(--accent)">👤</div>
+      <h3 style="color:var(--text);margin-bottom:8px">You</h3>
+      <div class="profile-info">
+        <p><span class="label">Status:</span> ${userProfile.status.charAt(0).toUpperCase() + userProfile.status.slice(1)}</p>
+        <p><span class="label">Bio:</span> ${userProfile.bio || 'No bio yet'}</p>
+        <p><span class="label">Privacy:</span></p>
+        <div style="margin-left:8px;font-size:0.85rem">
+          ${userProfile.privacy.showOnline ? '✓' : '✗'} Show online status<br>
+          ${userProfile.privacy.showProfile ? '✓' : '✗'} Profile visible<br>
+          ${userProfile.privacy.readReceipts ? '✓' : '✗'} Read receipts<br>
+          ${userProfile.privacy.lastSeen ? '✓' : '✗'} Show last seen
+        </div>
+      </div>
+    `;
+  }
+
+  function renderContactProfile(contact) {
+    const statusEmoji = contact.status === 'online' ? '🟢' : contact.status === 'away' ? '🟡' : '⚫';
+    profileContent.innerHTML = `
+      <div class="profile-avatar-large" style="background:var(--accent)">${contact.avatar}</div>
+      <h3 style="color:var(--text);margin-bottom:8px">${contact.name}</h3>
+      <div class="profile-info">
+        <p><span class="label">Status:</span> ${statusEmoji} ${contact.status.charAt(0).toUpperCase() + contact.status.slice(1)}</p>
+        <p><span class="label">Bio:</span> ${contact.bio || 'No bio'}</p>
+      </div>
+    `;
+  }
+
+  function deleteChat(chatId) {
+    showConfirmModal(
+      'Delete Chat',
+      'This chat and all messages will be permanently deleted. This action cannot be undone.',
+      () => {
+        state.chats = state.chats.filter(c => c.id !== chatId);
+        if (state.selected === chatId) {
+          state.selected = state.chats[0]?.id || null;
+        }
+        saveState();
+        renderContacts(searchInput.value);
+        renderMessages();
+        hideConfirmModal();
+      }
+    );
+  }
+
+  function clearChat(chatId) {
+    showConfirmModal(
+      'Clear Chat',
+      'All messages in this chat will be permanently deleted. The contact will remain.',
+      () => {
+        const chat = state.chats.find(c => c.id === chatId);
+        if (chat) {
+          chat.messages = [];
+          saveState();
+          renderMessages();
+        }
+        hideConfirmModal();
+      }
+    );
+  }
 
   function renderContacts(filter=''){
     contactsList.innerHTML = '';
@@ -129,15 +420,55 @@
       el.className = 'contact' + (state.selected === chat.id ? ' active' : '');
       el.tabIndex = 0;
       el.setAttribute('role','listitem');
+      
+      const av = document.createElement('div'); 
+      av.className='avatar'; 
+      av.innerHTML = chat.avatar || chat.name[0] || '?';
+      const statusInd = document.createElement('div');
+      statusInd.className = 'status-indicator ' + (chat.status || 'offline');
+      av.appendChild(statusInd);
+      
+      const info = document.createElement('div'); 
+      info.className='c-info';
+      const h = document.createElement('h4'); 
+      h.textContent = chat.name;
+      const last = chat.messages.length ? chat.messages[chat.messages.length-1].text : '';
+      const p = document.createElement('p'); 
+      p.textContent = last;
+      info.appendChild(h); 
+      info.appendChild(p);
+      
+      const menu = document.createElement('div');
+      menu.className = 'contact-menu';
+      
+      const profileBtn = document.createElement('button');
+      profileBtn.className = 'contact-btn';
+      profileBtn.textContent = '👤';
+      profileBtn.title = 'View profile';
+      profileBtn.onclick = (e) => { e.stopPropagation(); showProfileModal(chat.id); };
+      
+      const clearBtn = document.createElement('button');
+      clearBtn.className = 'contact-btn';
+      clearBtn.textContent = '🗑️';
+      clearBtn.title = 'Clear messages';
+      clearBtn.onclick = (e) => { e.stopPropagation(); clearChat(chat.id); };
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'contact-btn danger';
+      deleteBtn.textContent = '✕';
+      deleteBtn.title = 'Delete contact';
+      deleteBtn.onclick = (e) => { e.stopPropagation(); deleteChat(chat.id); };
+      
+      menu.appendChild(profileBtn);
+      menu.appendChild(clearBtn);
+      menu.appendChild(deleteBtn);
+      
+      el.appendChild(av); 
+      el.appendChild(info);
+      el.appendChild(menu);
       el.onclick = ()=>selectChat(chat.id);
       el.onkeydown = (e)=>{ if(e.key==='Enter') selectChat(chat.id); };
-      const av = document.createElement('div'); av.className='avatar'; av.textContent = chat.avatar || chat.name[0] || '?';
-      const info = document.createElement('div'); info.className='c-info';
-      const h = document.createElement('h4'); h.textContent = chat.name;
-      const last = chat.messages.length ? chat.messages[chat.messages.length-1].text : '';
-      const p = document.createElement('p'); p.textContent = last;
-      info.appendChild(h); info.appendChild(p);
-      el.appendChild(av); el.appendChild(info);
+      
       contactsList.appendChild(el);
     });
   }
@@ -149,8 +480,33 @@
   function renderMessages(){
     messagesEl.innerHTML = '';
     const chat = state.chats.find(c=>c.id===state.selected);
-    if(!chat){ chatTitle.textContent='Select a chat'; return; }
+    if(!chat){ 
+      chatTitle.textContent='Select a chat';
+      headerActions.innerHTML = '';
+      contactProfileBtn.style.display = 'none';
+      return; 
+    }
     chatTitle.textContent = chat.name;
+    contactProfileBtn.style.display = 'inline-block';
+
+    // Render header action buttons
+    headerActions.innerHTML = '';
+    const clearAllBtn = document.createElement('button');
+    clearAllBtn.className = 'btn';
+    clearAllBtn.textContent = 'Clear';
+    clearAllBtn.style.fontSize = '0.8rem';
+    clearAllBtn.style.padding = '6px 10px';
+    clearAllBtn.onclick = () => clearChat(chat.id);
+    
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn danger';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.style.fontSize = '0.8rem';
+    deleteBtn.style.padding = '6px 10px';
+    deleteBtn.onclick = () => deleteChat(chat.id);
+    
+    headerActions.appendChild(clearAllBtn);
+    headerActions.appendChild(deleteBtn);
 
     chat.messages.forEach(m=>{
       const row = document.createElement('div');
@@ -160,7 +516,6 @@
       row.appendChild(txt); row.appendChild(meta);
       messagesEl.appendChild(row);
     });
-    // scroll to bottom
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
@@ -169,7 +524,6 @@
     saveState();
     renderContacts(searchInput.value);
     renderMessages();
-    // On small screens hide sidebar
     if(window.innerWidth <= 720){
       sidebar.classList.add('hidden');
       backBtn.style.display = 'inline-block';
@@ -188,7 +542,6 @@
     saveState();
     renderMessages();
     renderContacts(searchInput.value);
-    // Simulate a small echo reply for demo
     setTimeout(()=> {
       chat.messages.push({id:Date.now()+1,from:chat.name, text:'(Auto) Got: '+txt, ts:Date.now()});
       saveState();
@@ -201,16 +554,43 @@
     const name = newContactName.value.trim();
     if(!name) return;
     const id = name.toLowerCase().replace(/\s+/g,'-') + '-' + Date.now();
-    state.chats.push({id, name, avatar: name[0].toUpperCase(), messages: [{id:1,from:name,text:`Hi, I'm ${name}`,ts:Date.now()}]});
+    state.chats.push({id, name, avatar: name[0].toUpperCase(), bio: '', status: 'online', messages: [{id:1,from:name,text:`Hi, I'm ${name}`,ts:Date.now()}]});
     newContactName.value='';
     saveState();
     renderContacts(searchInput.value);
   }
 
-  // Back button for mobile
-  backBtn.onclick = ()=> { sidebar.classList.remove('hidden'); backBtn.style.display='none'; }
-
   // Event listeners
+  backBtn.onclick = ()=> { sidebar.classList.remove('hidden'); backBtn.style.display='none'; }
+  cancelBtn.onclick = hideConfirmModal;
+  confirmBtn.onclick = () => { if (pendingAction) pendingAction(); }
+  confirmModal.onclick = (e) => { if (e.target === confirmModal) hideConfirmModal(); }
+  profileHeaderBtn.onclick = () => showProfileModal();
+  settingsBtn.onclick = showEditProfileModal;
+  editProfileBtn.onclick = showEditProfileModal;
+  closeProfileBtn.onclick = hideProfileModal;
+  profileModal.onclick = (e) => { if (e.target === profileModal) hideProfileModal(); }
+  editProfileModal.onclick = (e) => { if (e.target === editProfileModal) hideEditProfileModal(); }
+  cancelEditBtn.onclick = hideEditProfileModal;
+  contactProfileBtn.onclick = () => showProfileModal(state.selected);
+
+  saveProfileBtn.onclick = () => {
+    userProfile.bio = document.getElementById('bioInput').value;
+    userProfile.profilePic = document.getElementById('profilePicInput').value;
+    userProfile.status = document.getElementById('statusSelect').value;
+    userProfile.privacy = {
+      allowMessages: document.getElementById('allowMessages').checked,
+      showOnline: document.getElementById('showOnline').checked,
+      showProfile: document.getElementById('showProfile').checked,
+      showBio: document.getElementById('showBio').checked,
+      readReceipts: document.getElementById('readReceipts').checked,
+      lastSeen: document.getElementById('lastSeen').checked
+    };
+    saveUserProfile();
+    hideEditProfileModal();
+    alert('Profile updated successfully!');
+  };
+
   sendBtn.addEventListener('click', sendMessage);
   messageInput.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMessage(); });
   addContactBtn.addEventListener('click', addContact);
@@ -220,12 +600,11 @@
   // Init
   renderContacts();
   renderMessages();
-  // Ensure default selection exists
   if(!state.chats.find(c=>c.id===state.selected)) state.selected = state.chats[0]?.id || null;
   renderContacts();
   renderMessages();
-  // expose for debugging
   window.NKS_STATE = state;
+  window.NKS_PROFILE = userProfile;
 </script>
 
 </body>
