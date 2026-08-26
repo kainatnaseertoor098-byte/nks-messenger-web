@@ -1,104 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NKS Messenger</title>
   <style>
-    :root {
-      --bg-primary: #0f172a;
-      --bg-secondary: #1e293b;
-      --accent: #10b981;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+    :root{
+      --bg-primary:#0f172a; --bg-secondary:#1e293b; --accent:#10b981;
+      --muted:#94a3b8; --card:#334155; --text:#f8fafc;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: var(--bg-primary); color: var(--text-main); display: flex; justify-content: center; height: 100vh; }
-    .app-container { width: 100%; max-width: 480px; background: var(--bg-secondary); display: flex; flex-direction: column; border-right: 1px solid #334155; border-left: 1px solid #334155; }
-    
-    header { background: #0f172a; padding: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
-    header h1 { font-size: 1.2rem; color: var(--accent); }
-    .status-badge { background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; }
-
-    .chat-list { flex: 1; overflow-y: auto; padding: 12px; }
-    .chat-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #334155; margin-bottom: 8px; border-radius: 8px; cursor: pointer; }
-    .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    .chat-info h4 { font-size: 0.95rem; }
-    .chat-info p { font-size: 0.8rem; color: var(--text-muted); word-break: break-word; }
-
-    .controls { padding: 16px; background: #0f172a; border-top: 1px solid #334155; display: flex; flex-direction: column; gap: 10px; }
-    input[type="text"] { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: #fff; }
-    button { padding: 10px; background: var(--accent); border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{background:var(--bg-primary);color:var(--text);display:flex;justify-content:center;min-height:100vh;padding:20px;}
+    .app{width:100%;max-width:920px;height:80vh;background:var(--bg-secondary);display:flex;border-radius:8px;overflow:hidden;border:1px solid #0b1220}
+    /* Sidebar / Contacts */
+    .sidebar{width:320px;background:linear-gradient(180deg,#0f172a, #111827);border-right:1px solid #0b1220;display:flex;flex-direction:column}
+    .sidebar header{padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #0b1220}
+    .sidebar h2{color:var(--accent);font-size:1rem}
+    .search{padding:12px;border-bottom:1px solid #0b1220}
+    .search input{width:100%;padding:10px;border-radius:6px;border:1px solid #475569;background:#0b1220;color:var(--text)}
+    .contacts{flex:1;overflow:auto;padding:10px}
+    .contact{display:flex;gap:12px;padding:10px;background:var(--card);margin-bottom:8px;border-radius:8px;align-items:center;cursor:pointer}
+    .contact.active{outline:2px solid rgba(16,185,129,0.12)}
+    .avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1220;background:var(--accent)}
+    .c-info h4{font-size:0.95rem}
+    .c-info p{color:var(--muted);font-size:0.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:180px}
+    .add-contact{padding:12px;border-top:1px solid #0b1220;display:flex;gap:8px}
+    .add-contact input{flex:1;padding:8px;border-radius:6px;border:1px solid #475569;background:#0b1220;color:var(--text)}
+    .btn{padding:8px 12px;border-radius:6px;border:none;background:var(--accent);color:#04281b;font-weight:700;cursor:pointer}
+    /* Chat area */
+    .chat-area{flex:1;display:flex;flex-direction:column}
+    .chat-header{padding:14px 16px;background:#071026;border-bottom:1px solid #0b1220;display:flex;align-items:center;gap:12px}
+    .chat-header .title{font-weight:700}
+    .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+    .message{max-width:70%;padding:10px;border-radius:10px;background:#0b314a;color:var(--text);word-break:break-word}
+    .message.you{align-self:flex-end;background:#0b3a1b}
+    .meta{font-size:0.75rem;color:var(--muted);margin-top:6px}
+    .composer{padding:12px;border-top:1px solid #0b1220;background:#071026;display:flex;gap:8px}
+    .composer input{flex:1;padding:10px;border-radius:8px;border:1px solid #475569;background:#0b1220;color:var(--text)}
+    /* Mobile responsiveness: hide sidebar when chat open on small screens */
+    @media(max-width:720px){
+      .app{height:100vh;padding:0;border-radius:0}
+      .sidebar{position:absolute;z-index:3;left:0;top:0;bottom:0;transform:translateX(0);width:100%;max-width:none}
+      .chat-area{position:relative;z-index:2}
+      .sidebar.hidden{display:none}
+      .chat-header .back{display:inline-block;padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.02);cursor:pointer;margin-right:8px}
+    }
   </style>
 </head>
 <body>
 
-<div class="app-container">
-  <header>
-    <h1>NKS Messenger</h1>
-    <span class="status-badge">🔒 E2E Encrypted</span>
-  </header>
+<div class="app" role="application" aria-label="NKS Messenger">
+  <aside class="sidebar" id="sidebar">
+    <header>
+      <h2>NKS Messenger</h2>
+      <div class="status">🔒</div>
+    </header>
 
-  <div class="chat-list" id="chatList" aria-live="polite">
-    <div class="chat-item">
-      <div class="avatar">NKS</div>
-      <div class="chat-info">
-        <h4>General Group</h4>
-        <p>Welcome to NKS App!</p>
-      </div>
+    <div class="search">
+      <input id="searchInput" placeholder="Search contacts..." />
     </div>
-  </div>
 
-  <div class="controls">
-    <input type="text" id="msgInput" placeholder="Type a message..." />
-    <button id="sendBtn">Send Message</button>
-  </div>
+    <div class="contacts" id="contactsList" role="list"></div>
+
+    <div class="add-contact">
+      <input id="newContactName" placeholder="New contact name" />
+      <button class="btn" id="addContactBtn">Add</button>
+    </div>
+  </aside>
+
+  <section class="chat-area" id="chatArea">
+    <div class="chat-header" id="chatHeader">
+      <button class="back" id="backBtn" style="display:none">←</button>
+      <div class="title" id="chatTitle">Select a chat</div>
+      <div style="flex:1"></div>
+      <div class="status-badge" style="background:#064e3b;color:#34d399;padding:4px 8px;border-radius:12px;font-size:0.75rem">E2E</div>
+    </div>
+
+    <div class="messages" id="messages" aria-live="polite"></div>
+
+    <div class="composer">
+      <input id="messageInput" placeholder="Type a message..." />
+      <button class="btn" id="sendBtn">Send</button>
+    </div>
+  </section>
 </div>
 
 <script>
-  function createChatItem(senderLabel, message, avatarColor) {
-    const item = document.createElement('div');
-    item.className = 'chat-item';
+  // Simple chat app state persisted to localStorage
+  const STORAGE_KEY = 'nks_chats_v1';
 
-    const avatar = document.createElement('div');
-    avatar.className = 'avatar';
-    if (avatarColor) avatar.style.background = avatarColor;
-    avatar.textContent = senderLabel;
+  // Default chats
+  const DEFAULT = {
+    chats: [
+      { id: 'group', name: 'General Group', avatar: 'NKS', messages: [{id:1,from:'NKS',text:'Welcome to NKS App!',ts:Date.now()}] },
+      { id: 'alice', name: 'Alice', avatar: 'A', messages: [{id:1,from:'Alice',text:'Hi! I am Alice.',ts:Date.now()-60000}] },
+      { id: 'bob', name: 'Bob', avatar: 'B', messages: [{id:1,from:'Bob',text:'Hello there!',ts:Date.now()-120000}] }
+    ],
+    selected: 'group'
+  };
 
-    const info = document.createElement('div');
-    info.className = 'chat-info';
-    const title = document.createElement('h4');
-    title.textContent = senderLabel === 'You' ? 'Sent Message' : senderLabel;
-    const p = document.createElement('p');
-    // Use textContent to avoid inserting HTML (prevents XSS)
-    p.textContent = message;
+  let state = loadState();
+  const contactsList = document.getElementById('contactsList');
+  const messagesEl = document.getElementById('messages');
+  const chatTitle = document.getElementById('chatTitle');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const addContactBtn = document.getElementById('addContactBtn');
+  const newContactName = document.getElementById('newContactName');
+  const sidebar = document.getElementById('sidebar');
+  const backBtn = document.getElementById('backBtn');
+  const searchInput = document.getElementById('searchInput');
 
-    info.appendChild(title);
-    info.appendChild(p);
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) { localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT)); return JSON.parse(JSON.stringify(DEFAULT)); }
+      return JSON.parse(raw);
+    }catch(e){ console.error(e); localStorage.removeItem(STORAGE_KEY); return JSON.parse(JSON.stringify(DEFAULT)); }
+  }
+  function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-    item.appendChild(avatar);
-    item.appendChild(info);
-    return item;
+  function renderContacts(filter=''){
+    contactsList.innerHTML = '';
+    const filterLower = filter.toLowerCase();
+    state.chats.forEach(chat=>{
+      if(filter && !chat.name.toLowerCase().includes(filterLower)) return;
+      const el = document.createElement('div');
+      el.className = 'contact' + (state.selected === chat.id ? ' active' : '');
+      el.tabIndex = 0;
+      el.setAttribute('role','listitem');
+      el.onclick = ()=>selectChat(chat.id);
+      el.onkeydown = (e)=>{ if(e.key==='Enter') selectChat(chat.id); };
+      const av = document.createElement('div'); av.className='avatar'; av.textContent = chat.avatar || chat.name[0] || '?';
+      const info = document.createElement('div'); info.className='c-info';
+      const h = document.createElement('h4'); h.textContent = chat.name;
+      const last = chat.messages.length ? chat.messages[chat.messages.length-1].text : '';
+      const p = document.createElement('p'); p.textContent = last;
+      info.appendChild(h); info.appendChild(p);
+      el.appendChild(av); el.appendChild(info);
+      contactsList.appendChild(el);
+    });
   }
 
-  function sendMessage() {
-    const input = document.getElementById('msgInput');
-    const val = input.value.trim();
-    if (!val) return;
-
-    const chatList = document.getElementById('chatList');
-    const newItem = createChatItem('You', val, '#3b82f6');
-    chatList.appendChild(newItem);
-    input.value = '';
-    chatList.scrollTop = chatList.scrollHeight;
-    input.focus();
+  function formatTime(ts){
+    const d=new Date(ts); return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   }
 
-  document.getElementById('sendBtn').addEventListener('click', sendMessage);
-  document.getElementById('msgInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') sendMessage();
-  });
+  function renderMessages(){
+    messagesEl.innerHTML = '';
+    const chat = state.chats.find(c=>c.id===state.selected);
+    if(!chat){ chatTitle.textContent='Select a chat'; return; }
+    chatTitle.textContent = chat.name;
+
+    chat.messages.forEach(m=>{
+      const row = document.createElement('div');
+      row.className = 'message' + (m.from==='You' ? ' you' : '');
+      const txt = document.createElement('div'); txt.textContent = m.text;
+      const meta = document.createElement('div'); meta.className='meta'; meta.textContent = `${m.from} • ${formatTime(m.ts)}`;
+      row.appendChild(txt); row.appendChild(meta);
+      messagesEl.appendChild(row);
+    });
+    // scroll to bottom
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function selectChat(id){
+    state.selected = id;
+    saveState();
+    renderContacts(searchInput.value);
+    renderMessages();
+    // On small screens hide sidebar
+    if(window.innerWidth <= 720){
+      sidebar.classList.add('hidden');
+      backBtn.style.display = 'inline-block';
+    } else {
+      backBtn.style.display = 'none';
+    }
+  }
+
+  function sendMessage(){
+    const txt = messageInput.value.trim();
+    if(!txt) return;
+    const chat = state.chats.find(c=>c.id===state.selected);
+    if(!chat) return alert('Select a chat first');
+    chat.messages.push({id:Date.now(),from:'You',text:txt,ts:Date.now()});
+    messageInput.value='';
+    saveState();
+    renderMessages();
+    renderContacts(searchInput.value);
+    // Simulate a small echo reply for demo
+    setTimeout(()=> {
+      chat.messages.push({id:Date.now()+1,from:chat.name, text:'(Auto) Got: '+txt, ts:Date.now()});
+      saveState();
+      renderMessages();
+      renderContacts(searchInput.value);
+    },700);
+  }
+
+  function addContact(){
+    const name = newContactName.value.trim();
+    if(!name) return;
+    const id = name.toLowerCase().replace(/\s+/g,'-') + '-' + Date.now();
+    state.chats.push({id, name, avatar: name[0].toUpperCase(), messages: [{id:1,from:name,text:`Hi, I'm ${name}`,ts:Date.now()}]});
+    newContactName.value='';
+    saveState();
+    renderContacts(searchInput.value);
+  }
+
+  // Back button for mobile
+  backBtn.onclick = ()=> { sidebar.classList.remove('hidden'); backBtn.style.display='none'; }
+
+  // Event listeners
+  sendBtn.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMessage(); });
+  addContactBtn.addEventListener('click', addContact);
+  newContactName.addEventListener('keydown', e=>{ if(e.key==='Enter') addContact(); });
+  searchInput.addEventListener('input', ()=>renderContacts(searchInput.value));
+
+  // Init
+  renderContacts();
+  renderMessages();
+  // Ensure default selection exists
+  if(!state.chats.find(c=>c.id===state.selected)) state.selected = state.chats[0]?.id || null;
+  renderContacts();
+  renderMessages();
+  // expose for debugging
+  window.NKS_STATE = state;
 </script>
 
 </body>
