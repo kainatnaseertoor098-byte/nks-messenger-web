@@ -57,6 +57,8 @@
       z-index: 2000;
       width: 100%;
       height: 100%;
+      overflow-y: auto;
+      padding: 20px;
     }
 
     .login-screen.hidden {
@@ -68,7 +70,7 @@
       border-radius: 20px;
       padding: 40px;
       max-width: 420px;
-      width: 90%;
+      width: 100%;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       border: 1px solid var(--border);
     }
@@ -195,6 +197,57 @@
       margin-top: 16px;
       font-size: 0.85rem;
       color: var(--muted);
+    }
+
+    .forgot-link {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+
+    .forgot-link a {
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .forgot-link a:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    .recovery-steps {
+      background: rgba(16, 185, 129, 0.1);
+      border-left: 4px solid var(--accent);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .recovery-steps strong {
+      color: var(--accent);
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .back-btn:hover {
+      background: rgba(16, 185, 129, 0.2);
     }
 
     /* ===== MAIN CONTAINER ===== */
@@ -730,6 +783,8 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
     }
 
     .modal-overlay.active {
@@ -741,7 +796,7 @@
       border-radius: 16px;
       padding: 24px;
       max-width: 450px;
-      width: 90%;
+      width: 100%;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -901,26 +956,173 @@
     }
 
     @media (max-width: 600px) {
+      /* Mobile-optimized login */
+      .login-container {
+        padding: 30px 20px;
+        border-radius: 16px;
+      }
+
+      .login-logo-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+
+      .login-logo-text {
+        font-size: 2rem;
+      }
+
+      .login-title {
+        font-size: 1.4rem;
+      }
+
+      .login-subtitle {
+        font-size: 0.85rem;
+      }
+
+      /* Mobile layout */
       .sidebar {
         position: absolute;
         left: 0;
         top: 0;
         bottom: 0;
-        width: 280px;
+        width: 100%;
+        max-width: 280px;
         z-index: 100;
         display: none;
       }
+
       .sidebar.visible {
         display: flex;
       }
+
       .chat-section {
         width: 100%;
       }
+
       .info-panel {
         display: none;
       }
+
       .message {
-        max-width: 80%;
+        max-width: 85%;
+      }
+
+      .sidebar-header {
+        padding: 12px;
+      }
+
+      .app-name {
+        font-size: 1.5rem;
+      }
+
+      .chat-header {
+        padding: 12px;
+      }
+
+      .composer {
+        padding: 8px 12px;
+      }
+
+      .message-input {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+
+      .send-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+      }
+
+      .attach-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+      }
+
+      .messages-container {
+        padding: 12px;
+      }
+
+      .contact-item {
+        padding: 6px 8px;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+      }
+
+      .contact-name {
+        font-size: 0.85rem;
+      }
+
+      .contact-handle {
+        font-size: 0.75rem;
+      }
+
+      .modal {
+        padding: 20px;
+        max-width: 90vw;
+      }
+
+      .login-form {
+        gap: 10px;
+      }
+
+      .login-input {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+
+      .login-btn {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .login-container {
+        padding: 25px 15px;
+      }
+
+      .login-logo {
+        margin-bottom: 24px;
+        gap: 8px;
+      }
+
+      .login-logo-icon {
+        width: 45px;
+        height: 45px;
+      }
+
+      .login-logo-text {
+        font-size: 1.5rem;
+      }
+
+      .login-title {
+        font-size: 1.2rem;
+        margin-bottom: 6px;
+      }
+
+      .login-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 20px;
+      }
+
+      .message {
+        max-width: 90%;
+      }
+
+      .modal {
+        padding: 16px;
+      }
+
+      .recovery-steps {
+        font-size: 0.8rem;
+        padding: 10px;
       }
     }
 
@@ -974,6 +1176,26 @@
       font-size: 0.8rem;
       color: var(--accent);
     }
+
+    .success-message {
+      background: rgba(34, 197, 94, 0.2);
+      border-left: 4px solid var(--online);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      color: var(--online);
+      font-size: 0.9rem;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.2);
+      border-left: 4px solid var(--danger);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      color: var(--danger);
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -988,7 +1210,8 @@
     <h2 class="login-title">NKS Messenger</h2>
     <p class="login-subtitle">Connect with anyone, anywhere</p>
     
-    <div class="login-tabs">
+    <!-- LOGIN/SIGNUP TABS -->
+    <div class="login-tabs" id="authTabs">
       <button id="loginTabBtn" class="active">Sign In</button>
       <button id="signupTabBtn">Create Account</button>
     </div>
@@ -998,399 +1221,265 @@
       <input class="login-input" type="text" id="loginUsername" placeholder="Username" />
       <input class="login-input" type="password" id="loginPassword" placeholder="Password" />
       <button class="login-btn" id="loginBtn">Sign In</button>
+      <div class="forgot-link">
+        <a id="forgotPasswordBtn">Forgot Password?</a>
+      </div>
+      <p class="login-footer">Demo: Use any username & password to login</p>
     </div>
 
     <!-- SIGNUP FORM -->
-    <div class="login-form" id="signupForm" style="display:none;">
-      <input class="login-input" type="text" id="signupUsername" placeholder="Choose username" />
-      <input class="login-input" type="text" id="signupName" placeholder="Full name" />
-      <input class="login-input" type="password" id="signupPassword" placeholder="Create password" />
-      <input class="login-input" type="password" id="signupConfirmPassword" placeholder="Confirm password" />
+    <div class="login-form" id="signupForm" style="display: none;">
+      <input class="login-input" type="text" id="signupUsername" placeholder="Choose Username" />
+      <input class="login-input" type="email" id="signupEmail" placeholder="Email Address" />
+      <input class="login-input" type="password" id="signupPassword" placeholder="Password" />
+      <input class="login-input" type="password" id="signupConfirmPassword" placeholder="Confirm Password" />
       <button class="login-btn" id="signupBtn">Create Account</button>
+      <p class="login-footer">Choose a unique username & strong password</p>
     </div>
 
-    <div class="login-footer">
-      Demo: username: demo | password: demo123
+    <!-- FORGOT PASSWORD FORM -->
+    <div class="login-form" id="forgotForm" style="display: none;">
+      <div class="recovery-steps">
+        <strong>🔐 Password Recovery</strong><br>
+        Enter your username or email to receive recovery instructions
+      </div>
+      <input class="login-input" type="text" id="recoveryUsername" placeholder="Username or Email" />
+      <button class="login-btn" id="sendRecoveryBtn">Send Recovery Code</button>
+      <button class="back-btn" id="backToLoginBtn" style="width: 100%;">← Back to Sign In</button>
+      <p class="login-footer">Recovery code will be sent to your registered email</p>
     </div>
+
+    <!-- RECOVERY CODE FORM -->
+    <div class="login-form" id="recoveryCodeForm" style="display: none;">
+      <div class="recovery-steps">
+        <strong>✉️ Enter Recovery Code</strong><br>
+        Check your email for the 6-digit recovery code
+      </div>
+      <input class="login-input" type="text" id="recoveryCode" placeholder="Enter 6-digit code" maxlength="6" />
+      <button class="login-btn" id="verifyCodeBtn">Verify Code</button>
+      <button class="back-btn" id="backToForgotBtn" style="width: 100%;">← Back</button>
+      <p class="login-footer">Didn't receive code? Check spam folder</p>
+    </div>
+
+    <!-- RESET PASSWORD FORM -->
+    <div class="login-form" id="resetPasswordForm" style="display: none;">
+      <div class="recovery-steps">
+        <strong>🔑 Create New Password</strong><br>
+        Enter your new password below
+      </div>
+      <input class="login-input" type="password" id="newPassword" placeholder="New Password" />
+      <input class="login-input" type="password" id="confirmNewPassword" placeholder="Confirm Password" />
+      <button class="login-btn" id="confirmPasswordBtn">Reset Password</button>
+      <button class="back-btn" id="backToCodeBtn" style="width: 100%;">← Back</button>
+      <p class="login-footer">Password must be at least 6 characters</p>
+    </div>
+
   </div>
 </div>
 
-<!-- MAIN CONTAINER -->
+<!-- MAIN APP -->
 <div class="container" id="mainContainer">
-  <!-- LEFT: CHATS LIST -->
-  <div class="sidebar">
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="app-name">NKS</div>
       <div class="header-actions">
-        <button class="icon-btn" id="searchBtn" title="Search">🔍</button>
-        <button class="icon-btn" id="menuBtn" title="More">⋮</button>
-        <div class="menu-dropdown" id="menuDropdown">
-          <div class="menu-item" id="newChatMenu">💬 New Chat</div>
-          <div class="menu-item" id="settingsMenu">⚙️ Settings</div>
-          <div class="menu-item" id="logoutMenu">🚪 Logout</div>
+        <button class="icon-btn" id="newChatBtn" title="New Chat">➕</button>
+        <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+        <div class="menu-dropdown" id="settingsMenu">
+          <div class="menu-item" id="editProfileBtn">👤 Edit Profile</div>
+          <div class="menu-item" id="logoutBtn">🚪 Logout</div>
         </div>
       </div>
     </div>
-    
+
     <div class="search-container">
-      <input class="search-box" id="searchInput" placeholder="Search username or chat..." />
+      <input class="search-box" id="searchBox" type="text" placeholder="Search chats..." />
     </div>
-    
+
     <div class="contacts-list" id="contactsList"></div>
   </div>
 
-  <!-- MIDDLE: CHAT AREA -->
-  <div class="chat-section">
-    <div class="chat-header" id="chatHeader" style="display:none;">
+  <!-- MIDDLE CHAT SECTION -->
+  <div class="chat-section" id="chatSection">
+    <div class="chat-header" id="chatHeader">
       <div class="chat-header-info">
         <div class="chat-user-avatar" id="chatAvatar">👤</div>
         <div class="chat-user-details">
-          <h3 id="chatName">-</h3>
-          <p id="chatStatus">Offline</p>
+          <h3 id="chatName">Select a chat</h3>
+          <p id="chatStatus">Online</p>
         </div>
       </div>
       <div class="chat-header-actions">
-        <button class="header-btn" id="callBtn" title="Call">📞</button>
-        <button class="header-btn" id="videoBtn" title="Video">📹</button>
-        <button class="header-btn" id="infoBtn" title="Info">ℹ️</button>
+        <button class="header-btn" title="Call">☎️</button>
+        <button class="header-btn" title="Video">📹</button>
+        <button class="header-btn" id="menuToggleBtn" title="Menu">⋮</button>
       </div>
     </div>
-    
+
     <div class="messages-container" id="messagesContainer">
       <div class="empty-state">
         <div class="empty-state-icon">💬</div>
         <div class="empty-state-text">Select a chat to start messaging</div>
       </div>
     </div>
-    
-    <div class="composer" id="composerSection" style="display:none;">
+
+    <div class="composer">
       <div class="input-wrapper">
-        <button class="attach-btn" id="attachBtn" title="Attach">📎</button>
-        <input type="file" id="fileInput" style="display:none;" accept="image/*,.pdf,.doc,.docx" />
-        <input class="message-input" id="messageInput" placeholder="Message..." />
+        <button class="attach-btn" id="attachBtn">📎</button>
+        <textarea class="message-input" id="messageInput" placeholder="Type a message..." rows="1"></textarea>
       </div>
-      <button class="send-btn" id="sendBtn">➤</button>
+      <button class="send-btn" id="sendBtn">📤</button>
     </div>
   </div>
 
-  <!-- RIGHT: PROFILE PANEL -->
+  <!-- RIGHT INFO PANEL -->
   <div class="info-panel" id="infoPanel">
     <div class="info-header">
-      <h3>Contact Info</h3>
+      <h3>Profile</h3>
     </div>
     <div class="info-content">
       <div class="profile-card">
         <div class="profile-avatar-large" id="profileAvatar">👤</div>
-        <div class="profile-name" id="profileName">-</div>
-        <div class="profile-handle" id="profileHandle">@username</div>
-        <div class="profile-status" id="profileStatus">Offline</div>
+        <div class="profile-name" id="profileName">Name</div>
+        <div class="profile-handle" id="profileHandle">@handle</div>
+        <div class="profile-status" id="profileStatus">Online</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ADD CONTACT MODAL -->
-<div class="modal-overlay" id="addContactModal">
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-overlay" id="profileModal">
   <div class="modal">
-    <h3>🔍 Find Contact</h3>
+    <h3>Edit Profile</h3>
     <div class="form-group">
-      <label class="form-label">Search by username (@)</label>
-      <input class="form-input" type="text" id="searchUsername" placeholder="@username" />
-    </div>
-    <div class="search-results" id="searchResults"></div>
-    <div class="modal-actions">
-      <button class="cancel" id="closeAddContactBtn">Close</button>
-    </div>
-  </div>
-</div>
-
-<!-- SETTINGS MODAL -->
-<div class="modal-overlay" id="settingsModal">
-  <div class="modal">
-    <h3>⚙️ Settings</h3>
-    <div class="form-group">
-      <label class="form-label">Your Username</label>
-      <div style="padding:10px; background:var(--card); border-radius:8px; color:var(--accent); font-weight:600;" id="currentUsername">@username</div>
+      <label class="form-label">Username</label>
+      <input class="form-input" type="text" id="modalUsername" placeholder="Username" />
     </div>
     <div class="form-group">
-      <label class="form-label">Full Name</label>
-      <input class="form-input" type="text" id="settingsName" placeholder="Full name" />
+      <label class="form-label">Bio</label>
+      <input class="form-input" type="text" id="modalBio" placeholder="Add a bio..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Profile Picture</label>
+      <input class="form-input" type="file" id="modalProfilePic" accept="image/*" />
     </div>
     <div class="form-group">
       <label class="form-label">Status</label>
-      <select id="statusSelect" class="form-input">
+      <select class="form-input" id="modalStatus">
         <option value="online">🟢 Online</option>
         <option value="away">🟡 Away</option>
         <option value="offline">⚫ Offline</option>
       </select>
     </div>
     <div class="modal-actions">
-      <button class="cancel" id="closeSettingsBtn">Cancel</button>
-      <button class="confirm" id="saveSettingsBtn">Save</button>
+      <button class="cancel" id="closeProfileModal">Cancel</button>
+      <button class="confirm" id="saveProfileBtn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW CHAT MODAL -->
+<div class="modal-overlay" id="newChatModal">
+  <div class="modal">
+    <h3>Start New Chat</h3>
+    <div class="form-group">
+      <input class="form-input" type="text" id="newChatSearch" placeholder="Search contacts..." />
+    </div>
+    <div class="search-results" id="newChatResults"></div>
+    <div class="modal-actions">
+      <button class="cancel" id="closeNewChatModal">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <h3 id="confirmTitle">Confirm Action</h3>
+    <p id="confirmMessage"></p>
+    <div class="modal-actions">
+      <button class="cancel" id="confirmCancel">Cancel</button>
+      <button class="confirm" id="confirmOk">Confirm</button>
     </div>
   </div>
 </div>
 
 <script>
-  // ===== STATE & STORAGE =====
-  const DB_KEY = 'nks_users_db';
-  const CHATS_KEY = 'nks_chats_db';
-  const CURRENT_USER_KEY = 'nks_current_user';
+  // ===== STATE MANAGEMENT =====
+  const state = {
+    currentUser: null,
+    selectedChat: null,
+    chats: {},
+    contacts: [
+      { id: 1, name: 'Alice Johnson', handle: '@alice_j', status: 'online', avatar: '👩' },
+      { id: 2, name: 'Bob Smith', handle: '@bob_smith', status: 'away', avatar: '👨' },
+      { id: 3, name: 'Carol Davis', handle: '@carol_d', status: 'online', avatar: '👩‍🦰' },
+      { id: 4, name: 'David Wilson', handle: '@david_w', status: 'offline', avatar: '👨‍💼' },
+      { id: 5, name: 'Emma Brown', handle: '@emma_b', status: 'online', avatar: '👩‍🎨' },
+      { id: 6, name: 'Frank Miller', handle: '@frank_m', status: 'away', avatar: '👨‍🔧' }
+    ],
+    recoveryEmail: null
+  };
 
-  let currentUser = null;
-  let currentChat = null;
-  let allUsers = {};
-  let userChats = {};
+  // ===== LOGIN FUNCTIONALITY =====
+  const loginElements = {
+    loginScreen: document.getElementById('loginScreen'),
+    mainContainer: document.getElementById('mainContainer'),
+    loginForm: document.getElementById('loginForm'),
+    signupForm: document.getElementById('signupForm'),
+    forgotForm: document.getElementById('forgotForm'),
+    recoveryCodeForm: document.getElementById('recoveryCodeForm'),
+    resetPasswordForm: document.getElementById('resetPasswordForm'),
+    authTabs: document.getElementById('authTabs')
+  };
 
-  // ===== INITIALIZATION =====
-  function initializeApp() {
-    loadUsers();
-    currentUser = getCurrentUser();
-    
-    if (currentUser) {
-      showApp();
-      loadChats();
-      renderChats();
-    } else {
-      showLogin();
-    }
-  }
-
-  function showLogin() {
-    document.getElementById('loginScreen').classList.remove('hidden');
-    document.getElementById('mainContainer').classList.add('hidden');
-  }
-
-  function showApp() {
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('mainContainer').classList.remove('hidden');
-  }
-
-  // ===== USER MANAGEMENT =====
-  function loadUsers() {
-    try {
-      allUsers = JSON.parse(localStorage.getItem(DB_KEY)) || {};
-      if (Object.keys(allUsers).length === 0) {
-        allUsers = {
-          'demo': {username:'demo', name:'Demo User', password:'demo123', status:'online'},
-          'alice': {username:'alice', name:'Alice Johnson', password:'alice123', status:'online'},
-          'bob': {username:'bob', name:'Bob Smith', password:'bob123', status:'away'},
-          'charlie': {username:'charlie', name:'Charlie Brown', password:'charlie123', status:'offline'}
-        };
-        saveUsers();
-      }
-    } catch (e) {
-      allUsers = {};
-    }
-  }
-
-  function saveUsers() {
-    localStorage.setItem(DB_KEY, JSON.stringify(allUsers));
-  }
-
-  function getCurrentUser() {
-    try {
-      const data = localStorage.getItem(CURRENT_USER_KEY);
-      return data ? JSON.parse(data) : null;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  function saveCurrentUser(user) {
-    currentUser = user;
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-  }
-
-  // ===== CHAT MANAGEMENT =====
-  function loadChats() {
-    try {
-      const key = `${CHATS_KEY}_${currentUser.username}`;
-      userChats = JSON.parse(localStorage.getItem(key)) || {};
-    } catch (e) {
-      userChats = {};
-    }
-  }
-
-  function saveChats() {
-    const key = `${CHATS_KEY}_${currentUser.username}`;
-    localStorage.setItem(key, JSON.stringify(userChats));
-  }
-
-  function createOrOpenChat(otherUsername) {
-    const chatId = [currentUser.username, otherUsername].sort().join('_');
-    
-    if (!userChats[chatId]) {
-      userChats[chatId] = {
-        id: chatId,
-        otherUser: otherUsername,
-        messages: [],
-        createdAt: Date.now()
-      };
-      saveChats();
-    }
-    
-    selectChat(chatId);
-  }
-
-  function selectChat(chatId) {
-    currentChat = userChats[chatId];
-    if (!currentChat) return;
-
-    const otherUsername = currentChat.otherUser;
-    const otherUser = allUsers[otherUsername];
-
-    document.getElementById('chatHeader').style.display = 'flex';
-    document.getElementById('composerSection').style.display = 'flex';
-    document.getElementById('chatName').textContent = otherUser.name;
-    document.getElementById('chatStatus').textContent = otherUser.status.charAt(0).toUpperCase() + otherUser.status.slice(1);
-    document.getElementById('chatAvatar').textContent = otherUser.name[0].toUpperCase();
-
-    document.getElementById('profileName').textContent = otherUser.name;
-    document.getElementById('profileHandle').textContent = '@' + otherUsername;
-    document.getElementById('profileStatus').textContent = otherUser.status.charAt(0).toUpperCase() + otherUser.status.slice(1);
-    document.getElementById('profileAvatar').textContent = otherUser.name[0].toUpperCase();
-
-    renderMessages();
-    renderChats();
-    document.getElementById('messageInput').focus();
-  }
-
-  // ===== MESSAGE HANDLING =====
-  function sendMessage() {
-    const text = document.getElementById('messageInput').value.trim();
-    if (!text || !currentChat) return;
-
-    const message = {
-      id: Date.now(),
-      from: currentUser.username,
-      text: text,
-      timestamp: Date.now(),
-      status: 'sent'
-    };
-
-    currentChat.messages.push(message);
-    saveChats();
-    renderMessages();
-    document.getElementById('messageInput').value = '';
-
-    setTimeout(() => {
-      const reply = {
-        id: Date.now() + 1,
-        from: currentChat.otherUser,
-        text: '👍 Got your message!',
-        timestamp: Date.now(),
-        status: 'delivered'
-      };
-      currentChat.messages.push(reply);
-      saveChats();
-      renderMessages();
-    }, 800 + Math.random() * 500);
-  }
-
-  function renderMessages() {
-    const container = document.getElementById('messagesContainer');
-    if (!currentChat || currentChat.messages.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💬</div><div class="empty-state-text">Start the conversation</div></div>';
-      return;
-    }
-
-    container.innerHTML = '';
-    currentChat.messages.forEach(msg => {
-      const isOwn = msg.from === currentUser.username;
-      const time = new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-      const statusIcon = isOwn ? (msg.status === 'delivered' ? '✓✓' : '✓') : '';
-
-      const msgEl = document.createElement('div');
-      msgEl.className = `message ${isOwn ? 'sent' : 'received'}`;
-      msgEl.innerHTML = `
-        <div class="message-bubble">${msg.text}</div>
-        <div class="message-time">${time} ${statusIcon}</div>
-      `;
-      container.appendChild(msgEl);
-    });
-
-    container.scrollTop = container.scrollHeight;
-  }
-
-  function renderChats() {
-    const container = document.getElementById('contactsList');
-    const chats = Object.values(userChats).sort((a, b) => b.createdAt - a.createdAt);
-
-    if (chats.length === 0) {
-      container.innerHTML = '<div style="text-align:center; color:var(--muted); padding:20px; font-size:0.9rem;">No chats yet. Start by searching for a user.</div>';
-      return;
-    }
-
-    container.innerHTML = '';
-    chats.forEach(chat => {
-      const otherUser = allUsers[chat.otherUser];
-      if (!otherUser) return;
-
-      const lastMsg = chat.messages[chat.messages.length - 1];
-      const preview = lastMsg ? lastMsg.text.substring(0, 40) : 'No messages';
-      const isActive = currentChat && currentChat.id === chat.id;
-
-      const el = document.createElement('div');
-      el.className = `contact-item ${isActive ? 'active' : ''}`;
-      el.innerHTML = `
-        <div class="avatar ${otherUser.status}">${otherUser.name[0].toUpperCase()}</div>
-        <div class="contact-info">
-          <div class="contact-name">${otherUser.name}</div>
-          <div class="contact-handle">@${otherUser.username}</div>
-          <div class="contact-preview">${preview}</div>
-        </div>
-      `;
-
-      el.addEventListener('click', () => selectChat(chat.id));
-      container.appendChild(el);
-    });
-  }
-
-  // ===== AUTH HANDLERS =====
-  document.getElementById('loginTabBtn').addEventListener('click', function() {
-    this.classList.add('active');
+  // Tab switching
+  document.getElementById('loginTabBtn').addEventListener('click', () => {
+    loginElements.loginForm.style.display = 'flex';
+    loginElements.signupForm.style.display = 'none';
+    loginElements.forgotForm.style.display = 'none';
+    document.getElementById('loginTabBtn').classList.add('active');
     document.getElementById('signupTabBtn').classList.remove('active');
-    document.getElementById('loginForm').style.display = 'flex';
-    document.getElementById('signupForm').style.display = 'none';
   });
 
-  document.getElementById('signupTabBtn').addEventListener('click', function() {
-    this.classList.add('active');
+  document.getElementById('signupTabBtn').addEventListener('click', () => {
+    loginElements.signupForm.style.display = 'flex';
+    loginElements.loginForm.style.display = 'none';
+    loginElements.forgotForm.style.display = 'none';
+    document.getElementById('signupTabBtn').classList.add('active');
     document.getElementById('loginTabBtn').classList.remove('active');
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('signupForm').style.display = 'flex';
   });
 
+  // Login
   document.getElementById('loginBtn').addEventListener('click', () => {
-    const username = document.getElementById('loginUsername').value.trim().toLowerCase();
-    const password = document.getElementById('loginPassword').value;
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
 
-    if (!username || !password) {
-      alert('Please fill in all fields');
-      return;
+    if (username && password) {
+      state.currentUser = {
+        username: username,
+        email: username + '@nks.com',
+        bio: 'Hey, I am using NKS Messenger!',
+        status: 'online',
+        avatar: '👤'
+      };
+      loginElements.loginScreen.classList.add('hidden');
+      loginElements.mainContainer.classList.remove('hidden');
+      initializeChat();
     }
-
-    const user = allUsers[username];
-    if (!user || user.password !== password) {
-      alert('Invalid username or password');
-      return;
-    }
-
-    saveCurrentUser({username: user.username, name: user.name});
-    loadChats();
-    showApp();
-    renderChats();
   });
 
+  // Signup
   document.getElementById('signupBtn').addEventListener('click', () => {
-    const username = document.getElementById('signupUsername').value.trim().toLowerCase();
-    const name = document.getElementById('signupName').value.trim();
-    const password = document.getElementById('signupPassword').value;
-    const confirmPassword = document.getElementById('signupConfirmPassword').value;
+    const username = document.getElementById('signupUsername').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+    const confirmPassword = document.getElementById('signupConfirmPassword').value.trim();
 
-    if (!username || !name || !password || !confirmPassword) {
-      alert('Please fill in all fields');
+    if (!username || !email || !password) {
+      alert('Please fill all fields');
       return;
     }
 
@@ -1399,126 +1488,273 @@
       return;
     }
 
-    if (allUsers[username]) {
-      alert('Username already taken');
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters');
       return;
     }
 
-    allUsers[username] = {username, name, password, status: 'online'};
-    saveUsers();
+    state.currentUser = {
+      username: username,
+      email: email,
+      bio: 'Hey, I am using NKS Messenger!',
+      status: 'online',
+      avatar: '👤'
+    };
 
-    alert('Account created! Please login.');
-    document.getElementById('loginTabBtn').click();
+    loginElements.loginScreen.classList.add('hidden');
+    loginElements.mainContainer.classList.remove('hidden');
+    initializeChat();
   });
 
-  // ===== MENU HANDLERS =====
-  document.getElementById('menuBtn').addEventListener('click', () => {
-    document.getElementById('menuDropdown').classList.toggle('active');
+  // ===== FORGOT PASSWORD FLOW =====
+  document.getElementById('forgotPasswordBtn').addEventListener('click', () => {
+    loginElements.loginForm.style.display = 'none';
+    loginElements.signupForm.style.display = 'none';
+    loginElements.forgotForm.style.display = 'flex';
+    loginElements.authTabs.style.display = 'none';
   });
 
-  document.getElementById('newChatMenu').addEventListener('click', () => {
-    document.getElementById('menuDropdown').classList.remove('active');
-    document.getElementById('searchResults').innerHTML = '';
-    document.getElementById('searchUsername').value = '';
-    document.getElementById('addContactModal').classList.add('active');
+  document.getElementById('backToLoginBtn').addEventListener('click', () => {
+    loginElements.loginForm.style.display = 'flex';
+    loginElements.forgotForm.style.display = 'none';
+    loginElements.authTabs.style.display = 'flex';
   });
 
-  document.getElementById('settingsMenu').addEventListener('click', () => {
-    document.getElementById('menuDropdown').classList.remove('active');
-    document.getElementById('currentUsername').textContent = '@' + currentUser.username;
-    document.getElementById('settingsName').value = currentUser.name;
-    document.getElementById('settingsModal').classList.add('active');
+  document.getElementById('sendRecoveryBtn').addEventListener('click', () => {
+    const recovery = document.getElementById('recoveryUsername').value.trim();
+    if (!recovery) {
+      alert('Please enter username or email');
+      return;
+    }
+    
+    state.recoveryEmail = recovery.includes('@') ? recovery : recovery + '@nks.com';
+    
+    loginElements.forgotForm.style.display = 'none';
+    loginElements.recoveryCodeForm.style.display = 'flex';
+    
+    // Simulate sending code
+    alert('✉️ Recovery code sent to: ' + state.recoveryEmail);
   });
 
-  document.getElementById('logoutMenu').addEventListener('click', () => {
-    localStorage.removeItem(CURRENT_USER_KEY);
-    currentUser = null;
-    currentChat = null;
+  document.getElementById('backToForgotBtn').addEventListener('click', () => {
+    loginElements.recoveryCodeForm.style.display = 'none';
+    loginElements.forgotForm.style.display = 'flex';
+    document.getElementById('recoveryCode').value = '';
+  });
+
+  document.getElementById('verifyCodeBtn').addEventListener('click', () => {
+    const code = document.getElementById('recoveryCode').value.trim();
+    
+    if (code.length !== 6 || isNaN(code)) {
+      alert('Please enter a valid 6-digit code');
+      return;
+    }
+    
+    // Simulate code verification
+    loginElements.recoveryCodeForm.style.display = 'none';
+    loginElements.resetPasswordForm.style.display = 'flex';
+  });
+
+  document.getElementById('backToCodeBtn').addEventListener('click', () => {
+    loginElements.resetPasswordForm.style.display = 'none';
+    loginElements.recoveryCodeForm.style.display = 'flex';
+  });
+
+  document.getElementById('confirmPasswordBtn').addEventListener('click', () => {
+    const newPassword = document.getElementById('newPassword').value.trim();
+    const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+
+    if (!newPassword || !confirmNewPassword) {
+      alert('Please fill all fields');
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      alert('Password must be at least 6 characters');
+      return;
+    }
+
+    alert('✅ Password reset successful! Please login with your new password.');
+    
+    // Reset all forms
+    loginElements.resetPasswordForm.style.display = 'none';
+    loginElements.loginForm.style.display = 'flex';
+    loginElements.authTabs.style.display = 'flex';
     document.getElementById('loginUsername').value = '';
     document.getElementById('loginPassword').value = '';
-    showLogin();
+    document.getElementById('recoveryUsername').value = '';
+    document.getElementById('recoveryCode').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmNewPassword').value = '';
   });
 
-  // ===== SEARCH & ADD CONTACT =====
-  document.getElementById('searchUsername').addEventListener('input', (e) => {
-    const query = e.target.value.trim().toLowerCase().replace('@', '');
-    const results = document.getElementById('searchResults');
+  // ===== MAIN APP FUNCTIONALITY =====
+  function initializeChat() {
+    renderContacts();
+    setupEventListeners();
+  }
 
-    if (!query) {
-      results.innerHTML = '';
-      return;
-    }
+  function renderContacts() {
+    const contactsList = document.getElementById('contactsList');
+    contactsList.innerHTML = '';
 
-    const matches = Object.values(allUsers).filter(u => 
-      u.username.includes(query) && u.username !== currentUser.username
-    );
-
-    if (matches.length === 0) {
-      results.innerHTML = '<div style="color:var(--muted); padding:10px; text-align:center;">No users found</div>';
-      return;
-    }
-
-    results.innerHTML = matches.map(u => `
-      <div class="search-result-item" onclick="addContact('${u.username}')">
-        <div class="search-result-avatar">${u.name[0].toUpperCase()}</div>
-        <div class="search-result-info">
-          <div class="search-result-name">${u.name}</div>
-          <div class="search-result-handle">@${u.username}</div>
+    state.contacts.forEach(contact => {
+      const contactEl = document.createElement('div');
+      contactEl.className = 'contact-item';
+      contactEl.innerHTML = `
+        <div class="avatar ${contact.status}">${contact.avatar}</div>
+        <div class="contact-info">
+          <div class="contact-name">${contact.name}</div>
+          <div class="contact-handle">${contact.handle}</div>
+          <div class="contact-preview">Hey, how are you?</div>
         </div>
+      `;
+
+      contactEl.addEventListener('click', () => {
+        selectChat(contact);
+      });
+
+      contactsList.appendChild(contactEl);
+    });
+  }
+
+  function selectChat(contact) {
+    state.selectedChat = contact;
+
+    document.querySelectorAll('.contact-item').forEach(el => {
+      el.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+
+    document.getElementById('chatName').textContent = contact.name;
+    document.getElementById('chatStatus').textContent = contact.status;
+    document.getElementById('chatAvatar').textContent = contact.avatar;
+    document.getElementById('profileName').textContent = contact.name;
+    document.getElementById('profileHandle').textContent = contact.handle;
+    document.getElementById('profileAvatar').textContent = contact.avatar;
+
+    renderMessages();
+  }
+
+  function renderMessages() {
+    const container = document.getElementById('messagesContainer');
+    container.innerHTML = '';
+
+    const messages = [
+      { type: 'received', text: 'Hey! 👋 How are you doing?', time: '10:30 AM' },
+      { type: 'sent', text: 'I\'m doing great! How about you? 😊', time: '10:32 AM' },
+      { type: 'received', text: 'All good here too!', time: '10:33 AM' }
+    ];
+
+    messages.forEach(msg => {
+      const msgEl = document.createElement('div');
+      msgEl.className = `message ${msg.type}`;
+      msgEl.innerHTML = `
+        <div>
+          <div class="message-bubble">${msg.text}</div>
+          <div class="message-time">${msg.time}</div>
+        </div>
+      `;
+      container.appendChild(msgEl);
+    });
+  }
+
+  function setupEventListeners() {
+    // Settings
+    document.getElementById('settingsBtn').addEventListener('click', () => {
+      const menu = document.getElementById('settingsMenu');
+      menu.classList.toggle('active');
+    });
+
+    document.getElementById('editProfileBtn').addEventListener('click', () => {
+      document.getElementById('profileModal').classList.add('active');
+      document.getElementById('settingsMenu').classList.remove('active');
+    });
+
+    document.getElementById('closeProfileModal').addEventListener('click', () => {
+      document.getElementById('profileModal').classList.remove('active');
+    });
+
+    document.getElementById('saveProfileBtn').addEventListener('click', () => {
+      alert('✅ Profile updated successfully!');
+      document.getElementById('profileModal').classList.remove('active');
+    });
+
+    // New Chat
+    document.getElementById('newChatBtn').addEventListener('click', () => {
+      document.getElementById('newChatModal').classList.add('active');
+    });
+
+    document.getElementById('closeNewChatModal').addEventListener('click', () => {
+      document.getElementById('newChatModal').classList.remove('active');
+    });
+
+    // Messages
+    document.getElementById('sendBtn').addEventListener('click', sendMessage);
+    document.getElementById('messageInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        sendMessage();
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      state.currentUser = null;
+      state.selectedChat = null;
+      loginElements.loginScreen.classList.remove('hidden');
+      loginElements.mainContainer.classList.add('hidden');
+      document.getElementById('loginUsername').value = '';
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('settingsMenu').classList.remove('active');
+    });
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const text = input.value.trim();
+
+    if (!text || !state.selectedChat) return;
+
+    const container = document.getElementById('messagesContainer');
+    const msgEl = document.createElement('div');
+    msgEl.className = 'message sent';
+    msgEl.innerHTML = `
+      <div>
+        <div class="message-bubble">${text}</div>
+        <div class="message-time">Now</div>
       </div>
-    `).join('');
+    `;
+    container.appendChild(msgEl);
+    input.value = '';
+
+    setTimeout(() => {
+      const replyEl = document.createElement('div');
+      replyEl.className = 'message received';
+      replyEl.innerHTML = `
+        <div>
+          <div class="message-bubble">Thanks for the message! 😊</div>
+          <div class="message-time">Now</div>
+        </div>
+      `;
+      container.appendChild(replyEl);
+    }, 1000);
+
+    container.scrollTop = container.scrollHeight;
+  }
+
+  // Close modals on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+      }
+    });
   });
-
-  window.addContact = function(username) {
-    createOrOpenChat(username);
-    document.getElementById('addContactModal').classList.remove('active');
-  };
-
-  // ===== SETTINGS =====
-  document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-    const newName = document.getElementById('settingsName').value.trim();
-    if (!newName) {
-      alert('Please enter a name');
-      return;
-    }
-
-    currentUser.name = newName;
-    allUsers[currentUser.username].name = newName;
-    saveCurrentUser(currentUser);
-    saveUsers();
-
-    document.getElementById('settingsModal').classList.remove('active');
-    renderChats();
-    alert('Settings saved!');
-  });
-
-  // ===== MESSAGE INPUT =====
-  document.getElementById('messageInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
-
-  document.getElementById('sendBtn').addEventListener('click', sendMessage);
-
-  // ===== MODAL CLOSE HANDLERS =====
-  document.getElementById('closeAddContactBtn').addEventListener('click', () => {
-    document.getElementById('addContactModal').classList.remove('active');
-  });
-
-  document.getElementById('closeSettingsBtn').addEventListener('click', () => {
-    document.getElementById('settingsModal').classList.remove('active');
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.header-actions')) {
-      document.getElementById('menuDropdown').classList.remove('active');
-    }
-  });
-
-  // ===== INIT =====
-  initializeApp();
 </script>
 
 </body>
